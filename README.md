@@ -101,6 +101,7 @@ flowchart TD
 - **Calibrage rétrécissant** — une réponse donnée 3 fois est promue défaut personnel (opt-in). `--again "<nouvel objectif>"` rejoue le dernier calibrage : *« refais comme la dernière fois, mais pour X »*.
 - **Clinique `retour`** — collez une sortie réelle décevante : diagnostic de la clause fautive (citation), correctif minimal, **preuve avant/après** par ré-exécution sur l'entrée fautive. Le pattern de panne est distillé en vaccin : à la 2ᵉ occurrence, il est injecté d'office dans tous les futurs prompts de la famille.
 - **Cérémonie proportionnelle** — routage automatique : besoin simple → chemin express (1 variante, livraison directe) ; prompt réutilisable ou agent → chemin deep (panel + tournoi). `--improve` retouche un prompt existant en un tour, diff direct dans le fichier source.
+- **Base de connaissances embarquée** — les bonnes pratiques actuelles de 34 outils (GPT-5.x, Claude, Gemini, Mistral, Midjourney V8, Flux, Cursor, agents…), issues d'une recherche sur les docs officielles **vérifiée adversarialement** (fiabilité mesurée ~95-98 %), pré-chargées en 27 fiches de calibration datées. La skill démarre informée et se rafraîchit fiche par fiche. [Méthodologie](docs/BEST-PRACTICES.md)
 
 ### Installation
 
@@ -146,12 +147,15 @@ promptor/
 ├── skill/                   # La skill Claude Code
 │   ├── SKILL.md             #   Processus outillé + système de mémoire
 │   ├── references/
-│   │   └── promptor-chat.md #   Source de vérité du contrat
+│   │   ├── promptor-chat.md #   Source de vérité du contrat
+│   │   └── best-practices-2026.md  # Base de connaissances sourcée et vérifiée
+│   ├── cache/               #   27 fiches de calibration par outil (pré-chargées)
 │   ├── profile.md           #   Graine : défauts personnels
 │   ├── registry.md          #   Graine : registre des livraisons
 │   └── playbook.md          #   Graine : patterns par famille
 ├── docs/
-│   └── ARCHITECTURE.md      # Architecture détaillée du système
+│   ├── ARCHITECTURE.md      # Architecture détaillée du système
+│   └── BEST-PRACTICES.md    # Méthodologie de la base de connaissances
 └── CHANGELOG.md
 ```
 

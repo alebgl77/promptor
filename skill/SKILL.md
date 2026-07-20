@@ -31,7 +31,7 @@ Tout vit dans le dossier de la skill (`~/.claude/skills/promptor/`), PAS dans le
 - **`profile.md`** — défauts personnels auto-distillés (outil habituel, audience, format, ton, réutilisabilité) + compteurs de réponses + décisions d'auto-recalibration.
 - **`registry.md`** — LE registre unique : une ligne par livraison (date, slug, famille/outil, objectif court, calibrage compact, itérations utilisées, note, statut terrain, chemin du fichier). Alimente `--again`, `--from`, `--list`, le debrief, la clinique retour et l'auto-recalibration. **Règle de survie : jamais de second fichier d'état — quatre fichiers désynchronisés = mort de la mémoire en un mois.**
 - **`playbook.md`** — patterns par famille d'outil : patterns gagnants (distillés en Phase 4) + vaccins terrain (distillés en Phase R). Injecté dans chaque brief de génération. Max 15 lignes par famille, éviction FIFO ; uniquement des leçons issues de décisions D utilisateur, de greffes retenues ou de correctifs terrain confirmés — jamais d'hypothèses H.
-- **`cache/<outil>.md`** — bonnes pratiques WebSearch, en-tête daté, TTL 30 jours, `--refresh` force.
+- **`cache/<outil>.md`** — bonnes pratiques par outil, en-tête daté, TTL 30 jours, `--refresh` force. Livré pré-chauffé (recherche sourcée + vérification adversariale) et complété par `references/best-practices-2026.md`, la base de connaissances embarquée.
 - **`state/<slug>.json`** — état du cycle en cours (itération, journal D/H, chemin de la version de travail, golden set) → permet `--resume` après interruption.
 
 ## Routage par complexité (défaut — aligné model-routing)
@@ -52,7 +52,13 @@ Tout vit dans le dossier de la skill (`~/.claude/skills/promptor/`), PAS dans le
 
 ## Phase 1bis — Calibration dynamique (sautée en express/--fast)
 
-`WebSearch` « prompting best practices <outil exact> <version> <année> » + doc officielle, UNIQUEMENT si cache/<outil>.md absent ou > 30 jours (ou `--refresh`). Tout élément non confirmé par une source reste [À VÉRIFIER]. Échec → fallback silencieux sur la table statique.
+Chaîne de repli, dans l'ordre :
+1. **`cache/<outil>.md`** s'il existe et a moins de 30 jours (`--refresh` force la mise à jour). Le cache est livré pré-chauffé pour les outils majeurs.
+2. **`references/best-practices-2026.md`** — base de connaissances embarquée (7 familles, ~34 outils), issue d'une recherche sourcée vérifiée adversarialement. Utiliser la section de l'outil ; si l'en-tête de la base date de plus de 90 jours, l'utiliser quand même mais lancer un `WebSearch` de rafraîchissement et réécrire `cache/<outil>.md`.
+3. **`WebSearch`** « prompting best practices <outil exact> <version> <année courante> » + doc officielle de l'outil — écrire le résultat dans `cache/<outil>.md` avec en-tête daté.
+4. Échec de tout → table statique du contrat, silencieusement.
+
+Tout élément non confirmé par une source reste [À VÉRIFIER].
 
 ## Phase 2 — Génération
 

@@ -2,6 +2,18 @@
 
 Toutes les évolutions notables de Promptor sont documentées ici.
 
+## [3.1.0] — 2026-07
+
+**La base de connaissances.** Promptor démarre informé : les bonnes pratiques actuelles des modèles récents sont embarquées, sourcées et contre-vérifiées.
+
+### Ajouté
+- `skill/references/best-practices-2026.md` — base de connaissances : 7 familles, 34 outils, ~110 pratiques issues des documentations officielles (273 requêtes de recherche), passées au crible d'une vérification adversariale indépendante (116 requêtes de contre-vérification, fiabilité mesurée ~95-98 %, affirmations réfutées supprimées, ~40 corrections de précision appliquées).
+- `skill/cache/` pré-chargé — 27 fiches de calibration par outil (GPT-5.x, Claude, Gemini, Mistral, Midjourney V8.1, Flux, Stable Diffusion, Ideogram, Cursor, Copilot, v0, Lovable, Bolt, Windsurf, Claude Code, MCP, agents…), en-tête daté, TTL 30 jours.
+- `docs/BEST-PRACTICES.md` — méthodologie de constitution et politique de fraîcheur.
+
+### Modifié
+- Phase 1bis : chaîne de repli explicite `cache/<outil>.md` → base embarquée → WebSearch → table statique ; la base au-delà de 90 jours reste utilisable mais déclenche un rafraîchissement.
+
 ## [3.0.0] — 2026-07
 
 **Le système apprenant.** L'évaluation bascule du texte vers les sorties, et la mémoire transforme chaque cycle en capital.
