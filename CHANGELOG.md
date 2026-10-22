@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+### Corrigé
+- Retrait des promesses de notation infaillible, de progression systématique et
+  de coût quasi nul ; distinction entre protocole, simulation et résultat observé.
+- Suppression des taux de fiabilité non accompagnés d'un protocole et de résultats
+  reproductibles, dans les README EN/FR, la méthodologie et la base documentaire.
+- Conservation des liens sources et des dates historiques ; aucune nouvelle
+  validation des outils ou des caches n'est revendiquée.
+
 Toutes les évolutions notables de Promptor sont documentées ici.
 
 ## [3.1.0] — 2026-07
@@ -7,7 +17,7 @@ Toutes les évolutions notables de Promptor sont documentées ici.
 **La base de connaissances.** Promptor démarre informé : les bonnes pratiques actuelles des modèles récents sont embarquées, sourcées et contre-vérifiées.
 
 ### Ajouté
-- `skill/references/best-practices-2026.md` — base de connaissances : 7 familles, 34 outils, ~110 pratiques issues des documentations officielles (273 requêtes de recherche), passées au crible d'une vérification adversariale indépendante (116 requêtes de contre-vérification, fiabilité mesurée ~95-98 %, affirmations réfutées supprimées, ~40 corrections de précision appliquées).
+- `skill/references/best-practices-2026.md` — base documentaire datée : 7 familles, 34 outils, ~110 pratiques avec liens sources et relecture critique. Les anciennes estimations de fiabilité ont été retirées : aucun protocole et résultat brut reproductible ne les établit.
 - `skill/cache/` pré-chargé — 27 fiches de calibration par outil (GPT-5.x, Claude, Gemini, Mistral, Midjourney V8.1, Flux, Stable Diffusion, Ideogram, Cursor, Copilot, v0, Lovable, Bolt, Windsurf, Claude Code, MCP, agents…), en-tête daté, TTL 30 jours.
 - `docs/BEST-PRACTICES.md` — méthodologie de constitution et politique de fraîcheur.
 
@@ -42,7 +52,7 @@ Toutes les évolutions notables de Promptor sont documentées ici.
 - **Règle Cardinale** avec préséance explicite en cas de conflit ; plafond dur de 4 itérations ; l'arrêt appartient exclusivement à l'humain (`OK`/`STOP`) ou au plafond.
 - **Rubrique ancrée C1–C5** (descripteurs 0/1/2 par critère) remplaçant la note « étoiles » : citation verbatim obligatoire pour tout 2/2, note d'itération 1 bornée, note d'en-tête strictement égale au total du tableau.
 - **Protocole de commandes** `GO / OK / STOP / VOIR / ?` avec règles de reconnaissance (un « ok » en milieu de phrase n'est pas la commande OK ; répondre aux questions vaut GO).
-- **Journal D/H** : décisions verrouillées vs hypothèses renversables — une itération ne peut plus défaire la précédente.
+- **Journal D/H** : décisions validées à conserver vs hypothèses renversables — consigne de suivi explicite, sans garantie d'absence de régression.
 - **Table de calibration** intégrée pour 5 familles d'outils, avec ligne de repli pour les outils non listés.
 - **Garde-fou d'honnêteté épistémique** remplaçant l'interdiction d'halluciner : étiquetage `[À VÉRIFIER]`, hypothèses tracées.
 - **Calibrage en 6 questions** à réponse une-ligne (options, défauts entre crochets, `tout par défaut`).

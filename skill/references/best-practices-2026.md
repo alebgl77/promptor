@@ -2,19 +2,24 @@
 
 Dernière mise à jour : 2026-07-20
 
-Cette base alimente la **Phase 1bis** de Promptor (calibration dynamique). Elle est issue d'une
-recherche multi-sources sur les documentations officielles (273 requêtes web), suivie d'une
-**vérification adversariale indépendante** (116 requêtes de contre-vérification : sources consultées
-une à une, versions et paramètres recoupés — fiabilité mesurée : ~95-98 % selon la famille).
+Cette base alimente la **Phase 1bis** de Promptor (calibration dynamique). Elle compile
+des pratiques liées aux documentations des éditeurs, avec une relecture critique des sources.
+Les dates ci-dessous sont celles de la compilation ; elles ne signifient pas que les versions,
+paramètres et prix ont été vérifiés à nouveau.
 
-Marquage : **✓** confirmé en source primaire par le vérificateur · **⚠ à recouper** plausible mais
-non contre-vérifié · **[À VÉRIFIER]** incertain. Ce qu'aucune source fiable n'établit est listé en
-fin de section (« Non établi ») — jamais inventé.
+**Aucun taux de fiabilité global n'est établi** : le dépôt ne publie pas le jeu annoté, le
+protocole et les résultats bruts nécessaires à cette mesure. Une revue documentaire ne
+mesure pas non plus la performance des prompts générés. Voir la
+[méthodologie et ses limites](../../docs/BEST-PRACTICES.md).
+
+Marquage : **✓** vérification documentaire déclarée à la date de la fiche · **⚠ à recouper**
+point non confirmé · **[À VÉRIFIER]** incertitude. Les points non établis sont regroupés en fin
+de section. Pour utiliser une information volatile, vérifier la source courante.
 
 ---
 
 ## OpenAI (GPT-5.x, o-series, API)
-*Recherche : 2026-07-19 · Vérification adversariale : fiabilité très élevée (~95 %) — 15 des 16 affirmations confirmées à la source primaire, aucune réfutée, une seule pratique obsolète corrigée.*
+*Sources recensées le 2026-07-19 · Synthèse documentaire datée : vérifier les pages liées pour l'outil et la version utilisés.*
 
 ### GPT-5.x via API (Responses API) — prompting général et agentique
 **État courant** — GPT-5.6 (sorti ~9 juillet 2026, knowledge cutoff 16 février 2026) décliné en trois tiers : Sol (`gpt-5.6-sol`, frontier, 5 $/30 $ par M tokens), Terra (équilibre, 2,50 $/15 $) et Luna (coût/latence, 1 $/6 $) ; contexte 1,05 M tokens ; `reasoning_effort` jusqu'à xhigh/max. Guides de prompting officiels publiés jusqu'à GPT-5.2 (11 déc. 2025) ; la guidance GPT-5.5 est publiée dans la doc API officielle (« Model guidance »).
@@ -82,7 +87,7 @@ fin de section (« Non établi ») — jamais inventé.
 ---
 
 ## Anthropic Claude
-*Recherche : 2026-07-19 · Vérification adversariale : fiabilité très élevée (~95 %) — 12 des 13 affirmations vérifiées confirmées contre les sources primaires (souvent mot pour mot, snippets et chiffres inclus), une seule erreur chiffrée corrigée (minimum cacheable Haiku 4.5), aucune pratique réfutée.*
+*Sources recensées le 2026-07-19 · Synthèse documentaire datée : vérifier les pages liées pour l'outil et la version utilisés.*
 
 ### Claude — prompting général (API Messages et Claude.ai, tous modèles courants)
 **État courant** — Modèles courants dans la doc officielle (19/07/2026) : Claude Fable 5, Claude Mythos 5, Opus 4.8/4.7/4.6, Sonnet 5/4.6, Haiku 4.5. La page « Prompting best practices » est consolidée pour toute cette génération.
@@ -174,7 +179,7 @@ fin de section (« Non établi ») — jamais inventé.
 ---
 
 ## Google Gemini
-*Recherche : 2026-07-19 · Vérification adversariale : fiabilité très élevée (~95 %) — 12 affirmations sur 13 confirmées mot pour mot sur les sources citées, aucune hallucination de version ou de paramètre détectée.*
+*Sources recensées le 2026-07-19 · Synthèse documentaire datée : vérifier les pages liées pour l'outil et la version utilisés.*
 
 ### Gemini API — prompt design général & system instructions (Gemini 3.x/3.5)
 **État courant** — gemini-3.5-flash GA (annoncé à I/O 2026 le 19 mai ; contexte 1M tokens, 65k tokens de sortie), gemini-3.1-pro-preview, gemini-3.1-flash-lite ; gemini-2.5-flash et 2.5-pro encore servis. Gemini 3.5 Pro retardé : non sorti au 16 juillet 2026 (trois échéances manquées selon Bloomberg, modèle de base reconstruit). Nouvelle API « Interactions » (client.interactions.create) GA depuis juin 2026, generateContent maintenu en legacy.
@@ -235,7 +240,7 @@ fin de section (« Non établi ») — jamais inventé.
 ---
 
 ## Mistral & open-weight (Llama, DeepSeek)
-*Recherche : 2026-07-19 · Vérification adversariale : fiabilité très élevée (~95 %) — 13 des 14 pratiques confirmées à la citation près sur les sources primaires ; corrections appliquées (Magistral déprécié, attribution du piège few-shot R1 corrigée).*
+*Sources recensées le 2026-07-19 · Synthèse documentaire datée : vérifier les pages liées pour l'outil et la version utilisés.*
 
 ### Mistral (API et modèles open-weight : Large 3, Medium 3.5, Ministral 3)
 **État courant** — Mistral Large 3 (`mistral-large-2512`, déc. 2025, MoE 675B/41B actifs, Apache 2.0, contexte 256k) ; Mistral Medium 3.5 (29 avril 2026, modèle dense 128B, contexte 256k, `reasoning_effort` ajustable) qui absorbe Magistral et Devstral 2, désormais officiellement **dépréciés** ; famille Ministral 3 (3B/8B/14B, variantes base/instruct/reasoning).
@@ -288,7 +293,7 @@ fin de section (« Non établi ») — jamais inventé.
 ---
 
 ## Générateurs d'images
-*Recherche : 2026-07-19 · Vérification adversariale : fiabilité très élevée (~95 %) — les 10 sources vérifiées existent toutes et confirment le rapport souvent mot pour mot, avec seulement deux corrections factuelles mineures côté Midjourney (appliquées ci-dessous).*
+*Sources recensées le 2026-07-19 · Synthèse documentaire datée : vérifier les pages liées pour l'outil et la version utilisés.*
 
 ### Midjourney
 **État courant** — V8.1, modèle par défaut sur midjourney.com depuis le 11 juin 2026 (V8 alpha : 17 mars 2026, V8.1 : 30 avril 2026). V7 reste sélectionnable et conserve --oref/--cref ; --q existe en V8 (mode --q 4 officiel) mais serait retiré en V8.1 [À VÉRIFIER — périmètre du retrait appuyé sur un guide tiers uniquement].
@@ -367,7 +372,7 @@ fin de section (« Non établi ») — jamais inventé.
 ---
 
 ## Outils de code IA
-*Recherche : 2026-07-19 · Vérification adversariale : fiabilité très élevée (~95 %) — les 11 sources citées existent et confirment le rapport, aucune affirmation réfutée ni obsolète ; seules quelques nuances de formulation ont été corrigées ci-dessous.*
+*Sources recensées le 2026-07-19 · Synthèse documentaire datée : vérifier les pages liées pour l'outil et la version utilisés.*
 
 ### Cursor
 **État courant** — Docs cursor.com/docs/rules consultées le 2026-07-19 : hiérarchie Team Rules → Project Rules → User Rules, support AGENTS.md y compris imbriqué dans les sous-dossiers. Pas de numéro de version produit publié dans les pages consultées.
@@ -433,7 +438,7 @@ fin de section (« Non établi ») — jamais inventé.
 ---
 
 ## Agents autonomes et prompting agentique
-*Recherche : 2026-07-19 · Vérification adversariale : fiabilité très élevée (~98 %) — 13 groupes de pratiques vérifiés en source primaire, aucune affirmation réfutée ni obsolète, seules corrections de formulation (SHOULD vs obligation) et d'attribution de source.*
+*Sources recensées le 2026-07-19 · Synthèse documentaire datée : vérifier les pages liées pour l'outil et la version utilisés.*
 
 ### Claude Code (CLAUDE.md, boucle agentique)
 **État courant** — Docs officielles au 2026-07-19 : plan mode, auto mode, /goal, Stop hooks, /rewind, agent teams, headless `claude -p`. Modèles cités : Claude Sonnet 5, Opus 4.8, Sonnet 4.6.

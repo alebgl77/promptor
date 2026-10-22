@@ -35,9 +35,9 @@ Prompts are everywhere; good prompts are nowhere. Three flaws doom most prompt g
 
 Promptor tackles all three flaws head-on:
 
-- **Observed-performance gate** — no prompt converges until it has run on a real trial input.
+- **Trial-output gate** — the protocol requires a conforming trial output before proposing convergence. Chat trials are labeled simulations; the skill can run trials through its Claude host.
 - **Anchored C1–C5 rubric** — every score requires a verbatim quotation of the passage that justifies it; stopping belongs exclusively to the human (`OK` / `STOP`) or to the hard cap of 4 iterations.
-- **Three-tier memory** — profile, registry, playbook: calibration shrinks with use, and every field failure vaccinates future prompts.
+- **Three-tier memory** — profile, registry, playbook: reuse confirmed preferences and record field feedback for later prompts.
 
 ## Two ways to use it
 
@@ -47,7 +47,7 @@ Promptor tackles all three flaws head-on:
 | **Evaluation** | Labeled `[SORTIE D'ESSAI — simulation]` (simulated trial output) at every iteration | **Tournament: 3 variants actually executed**, judged blind on their outputs |
 | **Memory** | Portable `[CARNET DE BORD]` (logbook), to be copied from session to session | `profile.md`, `registry.md`, `playbook.md` — persistent and self-distilling |
 | **Field feedback** | `RETOUR :` (feedback) shortcut | `retour` (feedback) command with before/after proof |
-| **Marginal cost** | `EXPRESS` / `RAPPEL` (recall) shortcuts | `--again`: occurrence n+1 is nearly free |
+| **Reuse** | `EXPRESS` / `RAPPEL` (recall) shortcuts | `--again` reuses calibration; model usage and costs still depend on the run |
 
 ## Quick start (chat version)
 
@@ -81,7 +81,14 @@ Each working message shows: a status header (`Itération : i/4 · Note : n/10`, 
 | C5 | Tool-family conformance | Calibration table + learned patterns |
 | **C6** | **Observed performance** | **Gate: no convergence without a compliant trial output** |
 
-Three integrity rules make the score incorruptible: every 2/2 requires a **verbatim quotation**; the header score is **strictly equal** to the table total; the score **diagnoses but never decides** when to stop.
+Three integrity rules make scoring easier to inspect: every 2/2 requires a **verbatim quotation**; the header score must equal the table total; the score **diagnoses but never decides** when to stop. These are instructions for the host model, not a guarantee that its judgments are correct.
+
+The rubric is a qualitative diagnostic, not a reliability rate. A conforming
+trial shows behavior on that input, not general performance. Chat simulations
+and Claude-proxy runs are labeled as such; they do not establish behavior on
+another target model. Quality or cost can regress after a revision or a memory
+update. Compare versions on representative, held-out inputs in the target tool
+and retain actual outputs and usage before claiming an improvement.
 
 ## The skill: a system that learns
 
@@ -105,7 +112,7 @@ flowchart TD
 - **Shrinking calibration** — an answer given 3 times is promoted to a personal default (opt-in). `--again "<new goal>"` replays the last calibration: *"do it like last time, but for X"*.
 - **`retour` clinic** — paste a disappointing real output: diagnosis of the faulty clause (quoted), minimal fix, **before/after proof** by re-running on the failing input. The failure pattern is distilled into a vaccine: on the 2nd occurrence, it is automatically injected into all future prompts of that family.
 - **Proportional ceremony** — automatic routing: simple need → express path (1 variant, direct delivery); reusable prompt or agent → deep path (panel + tournament). `--improve` touches up an existing prompt in a single turn, with the diff applied directly in the source file.
-- **Built-in knowledge base** — current best practices for 34 tools (GPT-5.x, Claude, Gemini, Mistral, Midjourney V8, Flux, Cursor, agents…), drawn from research on the official documentation that was **adversarially verified** (measured reliability ~95-98%), preloaded as 27 dated calibration sheets. The skill starts out informed and refreshes itself sheet by sheet. [Methodology](docs/BEST-PRACTICES.md)
+- **Built-in knowledge base** — a dated compilation of documentation for 34 tools, with source links and 27 calibration sheets. Source review helps check individual claims; no measured reliability rate or prompt-performance benchmark is published. Recheck volatile model names, parameters and prices in the target tool's current documentation. [Methodology and freshness policy](docs/BEST-PRACTICES.md)
 
 ### Installation
 

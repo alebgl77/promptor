@@ -6,7 +6,9 @@ trigger: /promptor
 
 # /promptor — Architecte de prompts sur mesure (système apprenant)
 
-Transforme un besoin (ou un prompt existant) en prompt optimisé pour un outil IA précis. La spécification de comportement (règle cardinale, protocole, table de calibration, garde-fou anti-hallucination, rubrique C1–C5 + gate C6) est dans [references/promptor-chat.md](references/promptor-chat.md) — **lis ce fichier en premier**, c'est la source de vérité du contrat. Précision de mode : en version outillée, les [SORTIE D'ESSAI] sont des **exécutions réelles** via proxy Claude (sous-agents) ; la clause « tu ne l'exécutes jamais pour de vrai » et l'étiquette « simulation » ne valent que pour la version chat autonome. Ce SKILL.md décrit le processus outillé et le système de mémoire qui rend chaque cycle meilleur et moins cher que le précédent.
+Transforme un besoin (ou un prompt existant) en prompt optimisé pour un outil IA précis. La spécification de comportement (règle cardinale, protocole, table de calibration, garde-fou anti-hallucination, rubrique C1–C5 + gate C6) est dans [references/promptor-chat.md](references/promptor-chat.md) — **lis ce fichier en premier**, c'est la source de vérité du contrat. Précision de mode : en version outillée, les [SORTIE D'ESSAI] sont des **exécutions réelles** via proxy Claude (sous-agents) ; la clause « tu ne l'exécutes jamais pour de vrai » et l'étiquette « simulation » ne valent que pour la version chat autonome. Ce SKILL.md décrit le processus outillé et la mémoire qui réutilise les préférences et les retours confirmés. Ils visent à réduire le cadrage répété ; aucun gain de qualité ou de coût n'est garanti d'un cycle au suivant.
+
+**Portée des preuves.** La rubrique est un diagnostic qualitatif, pas une mesure de fiabilité. Les citations et le gate C6 restent requis, mais une sortie conforme sur quelques essais ne prouve pas la généralisation. Étiqueter simulations et exécutions via proxy ; ne revendiquer un gain que sur des sorties et consommations observées, avec comparaison sur des entrées réservées à l'évaluation dans l'outil cible. Une nouvelle préférence ou un pattern mémorisé peut nécessiter une correction.
 
 ## Usage
 
@@ -31,7 +33,7 @@ Tout vit dans le dossier de la skill (`~/.claude/skills/promptor/`), PAS dans le
 - **`profile.md`** — défauts personnels auto-distillés (outil habituel, audience, format, ton, réutilisabilité) + compteurs de réponses + décisions d'auto-recalibration.
 - **`registry.md`** — LE registre unique : une ligne par livraison (date, slug, famille/outil, objectif court, calibrage compact, itérations utilisées, note, statut terrain, chemin du fichier). Alimente `--again`, `--from`, `--list`, le debrief, la clinique retour et l'auto-recalibration. **Règle de survie : jamais de second fichier d'état — quatre fichiers désynchronisés = mort de la mémoire en un mois.**
 - **`playbook.md`** — patterns par famille d'outil : patterns gagnants (distillés en Phase 4) + vaccins terrain (distillés en Phase R). Injecté dans chaque brief de génération. Max 15 lignes par famille, éviction FIFO ; uniquement des leçons issues de décisions D utilisateur, de greffes retenues ou de correctifs terrain confirmés — jamais d'hypothèses H.
-- **`cache/<outil>.md`** — bonnes pratiques par outil, en-tête daté, TTL 30 jours, `--refresh` force. Livré pré-chauffé (recherche sourcée + vérification adversariale) et complété par `references/best-practices-2026.md`, la base de connaissances embarquée.
+- **`cache/<outil>.md`** — bonnes pratiques par outil, en-tête daté, TTL 30 jours, `--refresh` force. Livré avec des synthèses documentaires datées et des sources et complété par `references/best-practices-2026.md`, la base de connaissances embarquée.
 - **`state/<slug>.json`** — état du cycle en cours (itération, journal D/H, chemin de la version de travail, golden set) → permet `--resume` après interruption.
 
 ## Routage par complexité (défaut — aligné model-routing)
@@ -54,7 +56,7 @@ Tout vit dans le dossier de la skill (`~/.claude/skills/promptor/`), PAS dans le
 
 Chaîne de repli, dans l'ordre :
 1. **`cache/<outil>.md`** s'il existe et a moins de 30 jours (`--refresh` force la mise à jour). Le cache est livré pré-chauffé pour les outils majeurs.
-2. **`references/best-practices-2026.md`** — base de connaissances embarquée (7 familles, ~34 outils), issue d'une recherche sourcée vérifiée adversarialement. Utiliser la section de l'outil ; si l'en-tête de la base date de plus de 90 jours, l'utiliser quand même mais lancer un `WebSearch` de rafraîchissement et réécrire `cache/<outil>.md`.
+2. **`references/best-practices-2026.md`** — base de connaissances embarquée (7 familles, ~34 outils), issue d'une recherche sourcée et d'une relecture documentaire, sans taux de fiabilité mesuré publié. Utiliser la section de l'outil ; si l'en-tête de la base date de plus de 90 jours, l'utiliser quand même mais lancer un `WebSearch` de rafraîchissement et réécrire `cache/<outil>.md`.
 3. **`WebSearch`** « prompting best practices <outil exact> <version> <année courante> » + doc officielle de l'outil — écrire le résultat dans `cache/<outil>.md` avec en-tête daté.
 4. Échec de tout → table statique du contrat, silencieusement.
 
@@ -82,7 +84,7 @@ Tout élément non confirmé par une source reste [À VÉRIFIER].
 
 ## Phase 4 — Livraison (uniquement sur OK, STOP ou plafond)
 
-1. [ÉTAT FINAL] (itération, note, déclencheur) ; 2. prompt final en un seul bloc de code, identique à la dernière version de travail (clôture 4 accents graves si blocs imbriqués), few-shot certifiés inclus si tournoi ; 3. table des variables ; 4. changelog + « preuve de progression » (sortie v1 vs finale) si sorties d'essai ; 5. points non résolus (H + [À VÉRIFIER], quel que soit le déclencheur) ; 6. mode d'emploi express.
+1. [ÉTAT FINAL] (itération, note, déclencheur) ; 2. prompt final en un seul bloc de code, identique à la dernière version de travail (clôture 4 accents graves si blocs imbriqués), few-shot validés sur les essais inclus si tournoi ; 3. table des variables ; 4. changelog + « preuve de progression » (sortie v1 vs finale) si sorties d'essai ; 5. points non résolus (H + [À VÉRIFIER], quel que soit le déclencheur) ; 6. mode d'emploi express.
 7. **Écrire `prompts/<slug>.md`** (répertoire courant) et **appender la ligne au registre** (registry.md : calibrage compact, note, statut « livré »).
 8. **Distiller le playbook** : 0 à 2 lignes de patterns dans playbook.md (famille concernée) — uniquement depuis des D utilisateur ou des greffes retenues. Incrémenter les compteurs de profile.md ; proposer les promotions mûres (3 occurrences).
 - Après livraison : toute retouche = nouvelle livraison directe (même format + mise à jour du fichier et du registre), sans relancer la boucle.
@@ -100,7 +102,7 @@ Tout élément non confirmé par une source reste [À VÉRIFIER].
 
 Pas de cycle. `Read` du prompt (fichier désigné ou collé), inférence outil + calibrage (consignée en H et affichée AVANT application), note C1–C5, tableau de corrections avec citations, application par `Edit` **dans le seul fichier explicitement désigné** (l'approbation de permissions sert de contrôle humain ; mentionner « git diff pour vérifier »), livraison = diff + note avant/après + H restantes + ligne au registre. Escalade vers le cycle complet uniquement si note initiale ≤ 4/10 (refonte, pas retouche — proposer via AskUserQuestion) ou `--deep`. Prompt collé sans fichier → livraison classique, pas d'Edit.
 
-## `--again` / `--from` / `--list` : l'occurrence n+1 quasi gratuite
+## `--again` / `--from` / `--list` : réutiliser le calibrage
 
 - `--again [<objectif>]` : lire la dernière ligne du registre (ou le slug donné), afficher « Rejeu du calibrage de <slug> (<date>) : <calibrage compact> — delta : <objectif> », le consigner en H, sauter Phases 1/1bis, générer (express), livrer avec l'AskUserQuestion final unique. Un calibrage peut être périmé : le réafficher avant génération n'est pas optionnel.
 - `--from <slug>` : charger `prompts/<slug>.md` comme base + son calibrage comme défauts, ne demander que le delta.

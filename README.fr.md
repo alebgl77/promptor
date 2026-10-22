@@ -33,9 +33,9 @@ Les prompts sont partout ; les bons prompts, nulle part. Trois défauts condamne
 
 Promptor attaque les trois défauts frontalement :
 
-- **Gate de performance observée** — aucun prompt ne converge tant qu'il n'a pas tourné sur une entrée d'essai réelle.
+- **Gate sur sortie d'essai** — le protocole exige une sortie conforme avant de proposer la convergence. En chat, l'essai est une simulation étiquetée ; la skill peut exécuter des essais via son hôte Claude.
 - **Rubrique ancrée C1–C5** — chaque note exige une citation verbatim du passage qui la justifie ; l'arrêt appartient exclusivement à l'humain (`OK` / `STOP`) ou au plafond dur de 4 itérations.
-- **Mémoire à trois étages** — profil, registre, playbook : le calibrage rétrécit avec l'usage et chaque panne terrain vaccine les prompts futurs.
+- **Mémoire à trois étages** — profil, registre, playbook : réutiliser les préférences confirmées et consigner les retours terrain pour les prompts suivants.
 
 ## Deux façons de l'utiliser
 
@@ -45,7 +45,7 @@ Promptor attaque les trois défauts frontalement :
 | **Évaluation** | `[SORTIE D'ESSAI — simulation]` étiquetée à chaque itération | **Tournoi : 3 variantes exécutées réellement**, jugées en aveugle sur leurs sorties |
 | **Mémoire** | `[CARNET DE BORD]` portable, à recopier de session en session | `profile.md`, `registry.md`, `playbook.md` — persistants et auto-distillés |
 | **Retour terrain** | Raccourci `RETOUR :` | Commande `retour` avec preuve avant/après |
-| **Coût marginal** | Raccourcis `EXPRESS` / `RAPPEL` | `--again` : l'occurrence n+1 est quasi gratuite |
+| **Réutilisation** | Raccourcis `EXPRESS` / `RAPPEL` | `--again` reprend le calibrage ; usage et coût du modèle dépendent toujours de l'exécution |
 
 ## Démarrage rapide (version chat)
 
@@ -79,7 +79,15 @@ Chaque message de travail expose : un en-tête d'état (`Itération : i/4 · Not
 | C5 | Conformité à la famille d'outil | Table de calibration + patterns appris |
 | **C6** | **Performance observée** | **Gate : pas de convergence sans sortie d'essai conforme** |
 
-Trois règles d'intégrité rendent la note incorruptible : tout 2/2 exige une **citation verbatim** ; la note de l'en-tête est **strictement égale** au total du tableau ; la note **diagnostique mais ne décide jamais** de l'arrêt.
+Trois règles d'intégrité rendent la notation plus facile à inspecter : tout 2/2 exige une **citation verbatim** ; la note de l'en-tête doit égaler le total du tableau ; la note **diagnostique mais ne décide jamais** de l'arrêt. Ce sont des instructions pour le modèle hôte, sans garantie de justesse de son jugement.
+
+La rubrique est un diagnostic qualitatif, pas un taux de fiabilité. Un essai
+conforme renseigne sur cette entrée, pas sur la performance générale. Les
+simulations du chat et les exécutions via proxy Claude sont étiquetées ; elles
+ne prouvent pas le comportement d'un autre modèle cible. Une révision ou une
+mise à jour de mémoire peut dégrader la qualité ou le coût. Comparer les
+versions sur des entrées représentatives réservées à l'évaluation, dans l'outil
+cible, et conserver sorties et consommation avant d'annoncer un gain.
 
 ## La skill : un système qui apprend
 
@@ -103,7 +111,7 @@ flowchart TD
 - **Calibrage rétrécissant** — une réponse donnée 3 fois est promue défaut personnel (opt-in). `--again "<nouvel objectif>"` rejoue le dernier calibrage : *« refais comme la dernière fois, mais pour X »*.
 - **Clinique `retour`** — collez une sortie réelle décevante : diagnostic de la clause fautive (citation), correctif minimal, **preuve avant/après** par ré-exécution sur l'entrée fautive. Le pattern de panne est distillé en vaccin : à la 2ᵉ occurrence, il est injecté d'office dans tous les futurs prompts de la famille.
 - **Cérémonie proportionnelle** — routage automatique : besoin simple → chemin express (1 variante, livraison directe) ; prompt réutilisable ou agent → chemin deep (panel + tournoi). `--improve` retouche un prompt existant en un tour, diff direct dans le fichier source.
-- **Base de connaissances embarquée** — les bonnes pratiques actuelles de 34 outils (GPT-5.x, Claude, Gemini, Mistral, Midjourney V8, Flux, Cursor, agents…), issues d'une recherche sur les docs officielles **vérifiée adversarialement** (fiabilité mesurée ~95-98 %), pré-chargées en 27 fiches de calibration datées. La skill démarre informée et se rafraîchit fiche par fiche. [Méthodologie](docs/BEST-PRACTICES.md)
+- **Base de connaissances embarquée** — compilation documentaire datée couvrant 34 outils, avec liens sources et 27 fiches de calibration. La relecture des sources aide à contrôler chaque affirmation ; aucun taux de fiabilité mesuré ni benchmark de performance des prompts n'est publié. Revérifier les noms de modèles, paramètres et tarifs dans la documentation courante de l'outil cible. [Méthodologie et fraîcheur](docs/BEST-PRACTICES.md)
 
 ### Installation
 

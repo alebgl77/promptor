@@ -1,25 +1,35 @@
 # Base de connaissances — méthodologie
 
-Promptor embarque une base de connaissances des bonnes pratiques de prompting actuelles :
+Promptor embarque une base documentaire datée de bonnes pratiques de prompting :
 **[`skill/references/best-practices-2026.md`](../skill/references/best-practices-2026.md)** — 7 familles,
 34 outils, ~110 pratiques sourcées, plus **27 fiches de calibration par outil** pré-chargées dans
 [`skill/cache/`](../skill/cache/).
 
 ## Comment elle a été construite
 
-1. **Recherche multi-sources** — un chercheur par famille de modèles (OpenAI, Anthropic Claude,
-   Google Gemini, Mistral & open-weight, générateurs d'images, outils de code, agents autonomes),
-   273 requêtes web au total, priorité aux documentations officielles des éditeurs. Chaque pratique
-   exige une URL réellement consultée ; ce qui n'a pas de source fiable est déclaré « non établi »
-   plutôt qu'inventé.
-2. **Vérification adversariale indépendante** — un vérificateur par famille, chargé de *réfuter* :
-   116 requêtes de contre-vérification, chaque source rouverte (existe-t-elle ? dit-elle vraiment
-   cela ?), versions et paramètres exacts recoupés — c'est là que se logent les hallucinations.
-   Résultat : fiabilité mesurée de ~95 à 98 % selon la famille ; les affirmations réfutées ou
-   obsolètes ont été corrigées ou supprimées, et ~40 corrections de précision appliquées.
-3. **Étiquetage épistémique** — dans la base : **✓** confirmé en source primaire, **⚠ à recouper**
-   plausible non contre-vérifié, **[À VÉRIFIER]** incertain. Le même contrat d'honnêteté que
-   Promptor impose aux prompts qu'il produit.
+1. **Recherche documentaire par famille** — OpenAI, Anthropic Claude, Google Gemini,
+   Mistral & open-weight, générateurs d'images, outils de code et agents. La compilation
+   privilégie les documentations des éditeurs et conserve les liens associés aux pratiques.
+2. **Relecture critique des sources** — vérifier l'existence de la page, le passage qui
+   soutient une affirmation, la version concernée et les paramètres exacts ; corriger ou
+   retirer les pratiques contredites ou obsolètes. Il s'agit d'un contrôle documentaire,
+   pas d'un test de performance de Promptor.
+3. **Étiquetage épistémique** — **✓** signale une vérification documentaire déclarée à la
+   date de la fiche ; **⚠ à recouper** un point non confirmé ; **[À VÉRIFIER]** une
+   incertitude. Un marquage historique ne remplace pas la vérification de la source courante.
+
+## Ce que cette méthode permet d'affirmer
+
+Le dépôt publie les synthèses, dates et liens, mais pas un protocole reproductible,
+un jeu annoté et les résultats bruts permettant de mesurer une fiabilité globale.
+**Aucun taux de fiabilité n'est donc revendiqué.** Le nombre de recherches ou de
+contrôles documentaires n'est pas une mesure de précision des prompts générés.
+
+Une évaluation de performance demanderait un jeu de tâches représentatif et
+réservé à l'évaluation, une baseline, des critères définis à l'avance, plusieurs
+exécutions dans l'outil cible, les versions des modèles et les sorties et coûts
+observés. Cette correction éditoriale ne constitue pas une nouvelle validation
+des 34 outils et ne modifie pas les dates des sources ni des caches.
 
 ## Comment Promptor la consomme
 
