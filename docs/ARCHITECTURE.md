@@ -35,7 +35,7 @@ Invariants :
 
 ### Notation : rubrique ancrée + gate
 
-Cinq critères notés 0/1/2 sur descripteurs explicites (C1 clarté, C2 contexte, C3 contraintes, C4 format testable, C5 conformité famille), verrouillés par trois règles d'intégrité :
+Cinq critères notés 0/1/2 sur descripteurs explicites (C1 clarté, C2 contexte, C3 contraintes, C4 format testable, C5 conformité famille), encadrés par trois règles d'intégrité à faire respecter par le modèle hôte :
 
 - tout 2/2 exige une **citation verbatim** de la version de travail (sinon 1 max) ;
 - la note d'en-tête est **strictement égale** au total du tableau d'auto-critique ;
@@ -43,14 +43,21 @@ Cinq critères notés 0/1/2 sur descripteurs explicites (C1 clarté, C2 contexte
 
 S'y ajoute le **gate C6 (performance observée)** : dès qu'une entrée d'essai existe, aucune convergence n'est proposée sans une sortie d'essai conforme au format et à l'objectif. En version outillée, la note reste plafonnée et étiquetée (`n/10 — plafonnée à 8, gate C6`) tant qu'aucune exécution n'a réussi.
 
-### Journal D/H — l'anti-régression
+### Journal D/H — suivi des décisions
 
 Chaque cycle maintient un journal à deux types d'entrées :
 
-- **D (décision)** — validée par l'utilisateur, verrouillée : interdiction de la rouvrir sans demande explicite. C'est ce qui empêche l'itération n+1 de défaire l'itération n.
+- **D (décision)** — validée par l'utilisateur, verrouillée : interdiction de la rouvrir sans demande explicite. Cette consigne rend les décisions consultables lors des itérations suivantes ; elle ne garantit pas l'absence de régression dans les sorties.
 - **H (hypothèse)** — tranchée par Promptor (défaut appliqué, « décide pour moi », silence), renversable, jamais présentée comme un fait. Les H restantes figurent obligatoirement dans les « points non résolus » de la livraison.
 
 Ce journal est la colonne vertébrale de l'honnêteté épistémique du système : remplacer « aucune hallucination acceptée » (inefficace) par un traçage explicite de ce qui est su vs supposé.
+
+La notation et les règles de mémoire sont un protocole d'instructions, pas un
+moteur de certification. La version chat produit des simulations ; les essais
+via Claude ne prouvent pas le comportement d'un autre outil cible. Mesurer les
+gains éventuels sur des entrées réservées à l'évaluation, avec sorties, modèle,
+version, consommation et coûts observés. Une mémoire enrichie peut aussi
+introduire des contraintes inadaptées : conserver la possibilité de la corriger.
 
 ## La version outillée : quatre sous-systèmes
 
@@ -75,7 +82,7 @@ flowchart LR
     G1 & G2 & G3 --> X["Exécution parallèle<br>sur l'entrée d'essai"]
     X --> J["Juge en aveugle<br><i>sorties anonymisées</i>"]
     J --> U["Choix utilisateur<br><i>extraits A/B/C</i>"]
-    U --> V1["v1 = gagnant + greffes<br><i>few-shot certifiés</i>"]
+    U --> V1["v1 = gagnant + greffes<br><i>few-shot validés sur essais</i>"]
 ```
 
 Principes :
